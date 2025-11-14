@@ -1,0 +1,1280 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Orgus - Органы</title>
+  <link href="logomini.png" rel="icon" type="image/png"/>
+  <link href="logomini.png" rel="shortcut icon" type="image/png"/>
+  <style>
+    /* Основные стили */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background: url('background.png');
+      background-size: cover;
+      background-attachment: scroll;
+    }
+
+    /* Шапка сайта */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      display: grid;
+      grid-template-rows: 60px 40px;
+      z-index: 1000;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      border-radius: 0 0 15px 15px;
+      overflow: hidden;
+      background-color: rgb(86, 129, 135);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      padding: 0 20px 0 40px;
+      position: relative;
+    }
+
+    .logo-mini {
+      height: 50px;
+      width: auto;
+      margin-right: 20px;
+    }
+
+    .header-title {
+      font-size: 18px;
+      color: white;
+      font-weight: bold;
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background-color: rgba(0,0,0,0.15);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-button {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 5px 15px;
+      border-radius: 20px;
+      transition: all 0.3s;
+      white-space: nowrap;
+      background-color: transparent;
+    }
+
+    .nav-button:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+
+    .nav-button.active {
+      background-color: rgba(255,255,255,0.3);
+      font-weight: bold;
+    }
+
+    .contacts {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .contact-button {
+      width: 28px;
+      height: 28px;
+      background-color: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .contact-button:hover {
+      background-color: rgba(255,255,255,0.3);
+      transform: scale(1.1);
+    }
+
+    .tooltip {
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #333;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      margin-right: 10px;
+    }
+
+    .contact-button.active .tooltip,
+    .contact-button:hover .tooltip {
+      opacity: 1;
+    }
+
+    /* Основное содержимое */
+    .content {
+      margin-top: 100px;
+      min-height: calc(100vh - 100px);
+      padding: 30px 20px;
+      position: relative;
+    }
+
+    .tab {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .tab.active {
+      display: block;
+    }
+
+    /* Стили для контента вкладок */
+    .tab1-content {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 40px;
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 40px;
+      border-radius: 15px;
+    }
+
+    .tab1-text {
+      flex: 1;
+      line-height: 1.7;
+    }
+
+    .main-title {
+      color: rgb(86, 129, 135);
+      font-size: 32px;
+      text-transform: uppercase;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      font-size: 24px;
+      font-style: italic;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .tab1-image {
+      width: 300px;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .image-column {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .tab2-content {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .work-block {
+      min-height: 400px;
+      background-color: rgba(50, 50, 50, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+      padding: 20px;
+    }
+
+    .work-image {
+      width: 45%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .work-description {
+      width: 50%;
+      color: white;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .tab3-content {
+      max-width: 800px;
+      margin: 0 auto;
+      font-family: 'Arial', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 30px;
+      border-radius: 10px;
+      word-wrap: break-word;
+    }
+
+    .location {
+      background-color: rgba(86, 129, 135, 0.2);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      border-left: 5px solid rgb(86, 129, 135);
+    }
+
+    .location-title {
+      color: rgb(86, 129, 135);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* Конфигуратор */
+    .configurator {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: none;
+    }
+    
+    .config-step {
+      padding: 30px;
+      display: none;
+    }
+    
+    .config-step.active {
+      display: block;
+    }
+    
+    .step-title {
+      color: rgb(86, 129, 135);
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .option-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .option-card:hover {
+      border-color: rgb(86, 129, 135);
+      box-shadow: 0 5px 15px rgba(86, 129, 135, 0.1);
+    }
+    
+    .option-card.selected {
+      border: 2px solid rgb(86, 129, 135);
+      background-color: rgba(86, 129, 135, 0.05);
+    }
+
+    .multiple-select .option-card.selected {
+      background-color: rgba(86, 129, 135, 0.1);
+    }
+
+    .multiple-select .option-card.selected::after {
+      content: "✓";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: rgb(86, 129, 135);
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .option-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .option-price {
+      color: rgb(86, 129, 135);
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
+    .config-nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    
+    .config-nav-button {
+      padding: 12px 25px;
+      background: rgb(86, 129, 135);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    
+    .config-nav-button:hover {
+      background: rgb(70, 110, 115);
+    }
+    
+    .config-nav-button.secondary {
+      background: #eee;
+      color: #333;
+    }
+    
+    .config-nav-button:disabled {
+      background: #ddd;
+      cursor: not-allowed;
+    }
+    
+    .progress-bar {
+      height: 5px;
+      background: #eee;
+      margin-bottom: 20px;
+    }
+    
+    .progress {
+      height: 100%;
+      background: rgb(86, 129, 135);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    .summary {
+      background: #f9f9f9;
+      padding: 30px;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+    
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: rgb(86, 129, 135);
+    }
+    
+    .config-preview {
+      width: 100%;
+      height: 300px;
+      background: #f5f5f5;
+      border-radius: 10px;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .config-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Мобильная версия */
+    @media (max-width: 768px) {
+       .header {
+          position: static !important;
+    /* Убрано position: sticky и top */
+    height: auto;
+    grid-template-rows: auto auto;
+    z-index: 1000; /* Можно оставить, если нужно управлять слоями */
+  }
+  
+  .header-top {
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 80px;
+  }
+      
+      .logo-mini {
+        height: 40px;
+        margin-right: 15px;
+      }
+      
+      .header-title {
+        font-size: 16px;
+        white-space: normal;
+        word-break: break-word;
+        padding: 5px 0;
+        flex-basis: calc(100% - 150px);
+      }
+      
+      .header-bottom {
+        flex-wrap: wrap;
+        padding: 10px;
+        justify-content: space-between;
+      }
+      
+      .nav-buttons.desktop {
+        display: none;
+      }
+      
+      .nav-buttons.mobile {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: space-around;
+        order: 1;
+        margin-top: 10px;
+        padding: 5px 0;
+        background-color: transparent;
+        gap: 3px; /* Уменьшаем расстояние между кнопками по вертикали */
+        margin-top: 1px; /* Уменьшаем отступ сверху */
+        margin-bottom: 1px;
+      }
+      
+      .nav-button {
+        padding: 5px 10px;
+        transition: none !important;
+        background-color: transparent !important;
+        white-space: nowrap;
+        margin: 2px;
+      }
+      
+      .nav-button.active {
+        transform: none !important;
+      }
+      
+      .contacts {
+        order: 0;
+        margin-left: auto;
+        gap: 10px;
+      }
+
+      .content {
+        margin-top: 130px;
+        min-height: calc(100vh - 110px);
+        padding: 20px 15px;
+      }
+
+      .tab1-content {
+        flex-direction: column;
+        padding: 25px;
+      }
+      
+      .tab1-image {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+        margin: 0 auto 20px;
+      }
+
+      .desktop-only {
+        display: none;
+      }
+      
+      .work-block {
+        flex-direction: column;
+        padding: 15px;
+      }
+      
+      .work-image, .work-description {
+        width: 100%;
+      }
+      
+      .work-description {
+        margin-top: 15px;
+      }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .config-step {
+        padding: 20px;
+      }
+    
+  .tooltip {
+    right: 100%; /* Позиционируем слева от кнопки */
+    left: auto; /* Отменяем left: 100% если он был */
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 10px; /* Отступ от кнопки */
+    margin-left: 0;
+  }
+}
+
+    /* Десктоп версия */
+    @media (min-width: 769px) {
+      .nav-buttons.mobile {
+        display: none;
+      }
+
+      .contacts {
+        margin-left: auto;
+      }
+
+      .mobile-only {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Шапка сайта -->
+<div class="header">
+  <div class="header-top">
+    <img alt="Orgus" class="logo-mini" src="logomini.png"/>
+    <div class="header-title">Изготовление оргáнов. Обслуживание и ремонт вашего инструмента.</div>
+    <!-- Контакты -->
+    <div class="contacts">
+      <button class="contact-button" id="tg-button">
+        tg
+        <span class="tooltip">@Kataleps +79022410241</span>
+      </button>
+      <button class="contact-button" id="email-button">
+        @
+        <span class="tooltip">mail@kataleps.ru  umkrat@gmail.com </span>
+      </button>
+      <a class="contact-button vk" href="https://vk.com/kataleps" target="_blank">vk</a>
+    </div>
+  </div>
+  
+  <div class="header-bottom">
+    <!-- Основные кнопки навигации -->
+    <div class="nav-buttons desktop">
+      <a class="nav-button" data-tab="tab1" href="#">Главная</a>
+      <a class="nav-button" data-tab="tab2" href="#">Продукция</a>
+      <a class="nav-button" data-tab="tab3" href="#">Инфо</a>
+      <a class="nav-button" data-tab="tab4" href="#">Конфигуратор beta</a>
+    </div>
+    
+    <!-- Мобильная навигация -->
+    <div class="nav-buttons mobile">
+      <a class="nav-button" data-tab="tab1" href="#">Главная</a>
+      <a class="nav-button" data-tab="tab2" href="#">Продукция</a>
+      <a class="nav-button" data-tab="tab3" href="#">Инфо</a>
+      <a class="nav-button" data-tab="tab4" href="#">Конфигуратор</a>
+    </div>
+  </div>
+</div>
+<!-- Основное содержимое -->
+<div class="content">
+<!-- Вкладка 1: Главная -->
+<div class="tab active" id="tab1">
+<div class="tab1-content">
+<div class="image-column">
+<img alt="MIDI-орган" class="tab1-image desktop-only" src="logo.png"/>
+<img alt="MIDI-орган" class="tab1-image mobile-only" src="2.png"/>
+</div>
+<div class="tab1-text">
+<h1 class="main-title">Ручное изготовление электронных органов под заказ</h1>
+<h2 class="subtitle">Живое дыхание органа — у вас дома.</h2>
+<p>Духовой оргáн — это самый грандиозный, самый сложный и один из самых впечатляющих музыкальных инструментов, когда-либо созданных человеком. Он состоит из сотен и даже тысяч труб, компрессоров, системы воздухораспределения и величественной кафедры — пульта управления, где рождается музыка.</p>
+<p>Исторически оргáны возводились в соборах, храмах и концертных залах. И это неудивительно — масштаб инструмента просто не позволяет разместить его где-то ещё. Одни только трубы могут достигать 20 метров в высоту и 5 метров в диаметре, а само помещение становится частью его звучания, продолжением резонанса, живым телом акустики.</p>
+<p>Но с величием приходит и ограниченность. Такой инструмент:</p>
+<ul>
+<li>невозможно переместить;</li>
+<li>нельзя использовать в любое удобное время;</li>
+<li>невозможно сделать личным и индивидуальным — орган всегда принадлежал пространству, но не исполнителю.</li>
+</ul>
+<p>Сейчас это изменилось.</p>
+<p>Благодаря современным технологиям, виртуальные копии настоящих органов — в сочетании с высококачественными MIDI-консолями — позволяют вам прикоснуться к величию инструмента в собственном доме, студии или даже в дороге.</p>
+<p>Мы изготавливаем MIDI-консоли вручную, под заказ, с учетом ваших пожеланий и потребностей. Это не фабричное изделие, а уникальный музыкальный инструмент, в котором каждая деталь продумана и сделана с душой. От механики клавиатур до финишной отделки — всё настраивается индивидуально.</p>
+<p>Что делает наши консоли особенными:</p>
+<ul>
+<li><strong>Подлинное звучание</strong> — каждое нажатие оживляет запись настоящей органной трубы, отцифрованной с исторического инструмента. Вы слышите живой духовой оргáн, а не его электронную имитацию.</li>
+<li><strong>Индивидуальный дизайн</strong> — вы сами выбираете размеры, материалы, отделку, форму. Хотите компактную консоль для дома или мобильную версию, которая помещается в багажник? Или роскошный фасад, вписывающийся в классический интерьер? Мы сделаем это.</li>
+<li><strong>Максимальная функциональность</strong> — полная совместимость с ведущими программами виртуальных органов, расширяемость, надёжность и комфорт исполнения.</li>
+</ul>
+<p>Электронный орган, который звучит как настоящий.<br/>И принадлежит только вам.</p>
+</div>
+</div>
+</div>
+<!-- Вкладка 2: Продукция -->
+<div class="tab" id="tab2">
+<div class="tab2-content">
+<div class="work-block">
+<img alt="Первый прототип" class="work-image" src="op1.png"/>
+<div class="work-description">
+                        Первый прототип MIDI-консоли, мой личный инструмент, играю на нём каждый день, а также исполнил более 10 концертов на разных площадках Нижнего Новгорода и соседних областей. Орган состоит из трех мануалов, педали с двумя швеллерами и скамейки. Из интересных особенностей, отличающих его от консолей других производителей можно отметить педальную клавиатуру, чувствительную к силе нажатия (можно исполнять произведения педального фортепиано), кнопка переключения комбинаций на всю площадь первого мануала (удобно при игре без ассистента, не нужно целиться, а просто нажимать в любом месте клавиатуры), а также гибкая настройка индикации и элементов управления. Вес инструмента (35 кг) и его размер позволяет перемещать орган быстро и просто между концертными площадками: он помещается в легковой автомобиль на заднее сиденье. Конструкция независимой педали создает возможность размещения ее в любом положении относительно ручных клавиатур для удобства исполнения. <p>Все наши органы созданы по нормам немецкого органостроения, поэтому привыкать не придется - все уже удобно и привычно!</p>
+                    </div>
+</div>
+<div class="work-block">
+<img alt="Педальная клавиатура" class="work-image" src="ped.png"/>
+<div class="work-description">
+                        Важная часть любого оргáна - это его педальная клавиатура. Стандартом является прямая параллельная педаль на 30 клавиш, однако у нас можно заказать в любой конфигурации - длина, ширина, количество клавиш - как угодно. Выполнена она из бука - дерева не менее красивого, чем дуб, и не уступающего ему в прочности. Изготовление педали возможно также отдельно, специально для определенного оргáна, не только цифрового.
+                    </div>
+</div>
+<div class="work-block">
+<img alt="Инструмент под заказ" class="work-image" src="op2.png"/>
+<div class="work-description">
+                        Стандартный инструмент, подобный указанному выше, созданный под заказ.
+                    </div>
+</div>
+  <div class="work-block">
+  <img alt="op5" class="work-image" src="op5 2.png"/>
+  <div class="work-description">Удобный двухмануальный вариант, подключаемый к вашему компьютеру. Комплектуется зетцером, педалью, швеллером, назначаемой кнопкой в педали и скамейкой из массива бука.</div>
+</div>
+<div class="work-block">
+  <img alt="op7" class="work-image" src="op7.png"/>
+  <div class="work-description">Двухмануальный инструмент со встроенным компьютером и сенсорным экраном. Вы можете набирать и переключать регистры пальцем, при этом орган имеет WI-FI и Bluetooth, что открывает безграничные возможности коммутации. Также в нем есть панель зетцера, швеллер, назначаемая кнопка.</div>
+</div>
+<div class="work-block">
+  <img alt="op8" class="work-image" src="op8.png"/>
+  <div class="work-description">Трехмануальный концертный инструмент синего цвета выполнен в едином стиле из массива бука, имеет два швеллера и стандартный зетцер.</div>
+</div>
+<div class="work-block">
+  <img alt="op9" class="work-image" src="op9.png"/>
+  <div class="work-description">Двухмануальный орган со встроенным компьютером, швеллером и зетцером. Последний обладает дополнительным дисплеем для отображения комбинаций, а также цифрового отображения положения швеллера и индикации событий.</div>
+</div>
+<div class="work-block">
+  <img alt="op8" class="work-image" src="op10.png"/>
+  <div class="work-description">Трехмануальный инструмент с клавиатурами высокого класса, зетцером и экраном комбинаций, изготовленный под заказ в цвет мореного дуба.</div>
+</div>
+  <div class="work-block">
+<img alt="Переделанный советский орган" class="work-image" src="op10bis.png"/>
+<div class="work-description">
+                        Восстановленный советский оргáн Прелюдия-1 c улучшеной акустической системой и переработаным клавиатурным механизмом для специального заказа музея старинных инструментов "Рождение музыки".</div>
+  </div>
+<div class="work-block">
+<img alt="Переделанный советский орган" class="work-image" src="op3.png"/>
+<div class="work-description">
+                        Усовершенствованный советский оргáн Прелюдия-2, зазвучавший новыми красками, получивший много новых возможностей. Мастерская обладает опытом восстановления и ремонта обеих моделей советских электронных органов, что позволяет быстро и качественно находить решения для реставрации подобных инструментов.
+                    </div>
+</div>
+<div class="work-block">
+<img alt="Концертный инструмент" class="work-image" src="op4.png"/>
+<div class="work-description">
+                        Концертный инструмент церкви евангельских христиан баптистов города Нижнего Новгорода. Мастерская участвовала в его создании и доработке.
+                    </div>
+</div>
+</div>
+</div>
+<!-- Вкладка 3: Инфо -->
+<div class="tab" id="tab3">
+<div class="tab3-content">
+  <div class="location">
+  <div class="location-title">Скачать Руководство по эксплуатации</div>
+  <p>Подробная инструкция по подключению, использованию и настройке органа. Рекомендуется к прочтению перед первым использованием.</p>
+  <a href="manual.pdf" download style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: rgb(86, 129, 135); color: white; border-radius: 10px; text-decoration: none;">Скачать</a>
+</div>
+
+<div class="location">
+<div class="location-title">Наше производство</div>
+<p>Все инструменты изготавливаются вручную в городе Нижний Новгород — одном из исторических центров органного искусства России. Город с богатыми музыкальными традициями, где переплетаются современные технологии и многовековой опыт создания музыкальных инструментов.</p>
+</div>
+<h2>Изготовление электронных MIDI-органов: от теории к практике</h2>
+<h3>Что такое MIDI?</h3>
+<p>MIDI (Musical Instrument Digital Interface) — это стандарт цифровой передачи музыкальных данных, разработанный в 1980-х годах. В отличие от аудиосигнала, MIDI не передаёт звук напрямую, а содержит команды: какая нота нажата, с какой силой, как долго она звучит и т. д. Это позволяет управлять виртуальными инструментами, синтезаторами и даже целыми оркестрами с одного контроллера.</p>
+<p>MIDI-орган — это электронный орган, который вместо традиционных труб или цифровых сэмплов использует MIDI-сообщения для воспроизведения звука через компьютер или внешний синтезатор.</p>
+<h3>Как создают MIDI-органы?</h3>
+<h4>Конструкция клавиатур</h4>
+<p>Используются механические клавиши (например, от старых органов или фортепиано) либо специализированные MID-контроллеры.</p>
+<p>Важно обеспечить реалистичную механику, особенно для педальной клавиатуры.</p>
+<p>Датчики (оптические, резистивные или магнитные датчики Холла) фиксируют нажатия и преобразуют их в MIDI-сигналы.</p>
+<h4>Электроника</h4>
+<p>Контроллеры собственной разработки обрабатывают сигналы с клавиш и педали.</p>
+<p>Для передачи данных используется MIDI-интерфейс USB для простоты подключения.</p>
+<h4>Программное обеспечение</h4>
+<p>Виртуальные органы (Hauptwerk, GrandOrgue) получают MIDI-данные и воспроизводят сэмплы реальных органов.</p>
+<p>Возможна настройка тембров, темпераций, строя, акустики и даже моделирование работы конкретных соборных органов с возможностью выбора расположения исполнителя относительно органа.</p>
+<h4>Корпус и акустика</h4>
+<p>Безусловно, я могу изготовить корпус любого формата: аутентичный с деревянными трубами (для декора), различные компактные решения с мультимедийными колонками.</p>
+<h3>Hauptwerk — вершина виртуальных органов</h3>
+<p>Hauptwerk — это профессиональное ПО для эмуляции органов, использующее сэмплы реальных инструментов с высокой детализацией. Поддерживается:</p>
+<ul>
+<li>Многоканальный звук для акустического пространства.</li>
+<li>Работу с педалями швеллера, вальцшвеллера и регистрами.</li>
+<li>Подключение нескольких MIDI-консолей и педальных блоков.</li>
+</ul>
+<p>С Hauptwerk даже домашний MIDI-орган может звучать как орган собора Нотр-Дам или Сикстинской капеллы.</p>
+<h3>Заключение</h3>
+<p>Создание MIDI-органа — это сочетание инженерного мастерства и музыкального творчества. Такой инструмент открывает доступ к бесконечной библиотеке звуков и возможностям настройки, оставаясь при этом более доступным, чем традиционные органы. Благодаря технологиям вроде Hauptwerk, каждый может прикоснуться к миру органной музыки, не выходя из дома.</p>
+<div class="location-title">По всем вопросам и ценам - пишите или звоните по подсказкам в верхнем правом углу экрана.</div>
+</div>
+</div>
+<!-- Вкладка 4: Конфигуратор -->
+<div class="tab" id="tab4">
+  <div class="tab4-content">
+    <div class="configurator">
+      <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+      </div>
+      
+      <!-- Шаг 1: Тип органа -->
+      <div class="config-step active" id="step1">
+        <h2 class="step-title">Выберите тип органа</h2>
+        <div class="options-grid">
+          <div class="option-card" data-price="90000" data-value="home">
+            <div class="option-title">Домашний орган</div>
+            <p>Компактный вариант для дома или студии без встроенного компьютера, подключение к вашему устройству</p>
+            <div class="option-price">от 90 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="130000" data-value="concert">
+            <div class="option-title">Концертный орган</div>
+            <p>Профессиональный инструмент для выступлений со встроенным компьютером</p>
+            <div class="option-price">от 130 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="250000" data-value="church">
+            <div class="option-title">Церковный орган</div>
+            <p>Монументальный инструмент для храмов со встроенным компьютером и аудиосистемой</p>
+            <div class="option-price">от 250 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="90000" data-value="pedal">
+            <div class="option-title">Органная педаль</div>
+            <p>Отдельная педальная клавиатура для органа</p>
+            <div class="option-price">от 90 000 ₽</div>
+          </div>
+        </div>
+        <div class="config-nav-buttons">
+          <button class="config-nav-button secondary" disabled>Назад</button>
+          <button class="config-nav-button" onclick="nextStep(1)">Далее</button>
+        </div>
+      </div>
+      
+      <!-- Шаг 2: Клавиатура -->
+      <div class="config-step" id="step2">
+        <h2 class="step-title">Конфигурация клавиатуры</h2>
+        <div class="options-grid">
+          <div class="option-card" data-price="30000" data-value="2manuals">
+            <div class="option-title">2 мануала</div>
+            <p>Две ручные клавиатуры по 61 клавише</p>
+            <div class="option-price">+30 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="50000" data-value="3manuals">
+            <div class="option-title">3 мануала</div>
+            <p>Три ручные клавиатуры по 61 клавише</p>
+            <div class="option-price">+50 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="120000" data-value="custom">
+            <div class="option-title">Индивидуальная</div>
+            <p>Своя конфигурация по договоренности</p>
+            <div class="option-price">+120 000 ₽</div>
+          </div>
+        </div>
+        <div class="config-nav-buttons">
+          <button class="config-nav-button secondary" onclick="prevStep(2)">Назад</button>
+          <button class="config-nav-button" onclick="nextStep(2)">Далее</button>
+        </div>
+      </div>
+      
+      <!-- Шаг 3: Педаль -->
+      <div class="config-step" id="step3">
+        <h2 class="step-title">Педальная клавиатура</h2>
+        <div class="options-grid">
+          <div class="option-card" data-price="40000" data-value="standard">
+            <div class="option-title">Прямая</div>
+            <p>30 клавиш, прямая параллельная конструкция</p>
+            <div class="option-price">+40 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="70000" data-value="radial">
+            <div class="option-title">Радиальная</div>
+            <p>32 клавиши, радиальное расположение</p>
+            <div class="option-price">+70 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="0" data-value="none">
+            <div class="option-title">Без педали</div>
+            <p>Только ручные клавиатуры</p>
+            <div class="option-price">+0 ₽</div>
+          </div>
+        </div>
+        <div class="config-nav-buttons">
+          <button class="config-nav-button secondary" onclick="prevStep(3)">Назад</button>
+          <button class="config-nav-button" onclick="nextStep(3)">Далее</button>
+        </div>
+      </div>
+      
+      <!-- Шаг 4: Педали швеллера -->
+      <div class="config-step" id="step4">
+        <h2 class="step-title">Педали швеллера и пистоны</h2>
+        <div class="options-grid">
+          <div class="option-card" data-price="0" data-value="double_purpose">
+            <div class="option-title">Педаль двойного назначения</div>
+            <p>Швеллер + вальц и кнопка "вперед"</p>
+            <div class="option-price">+0 ₽</div>
+          </div>
+          <div class="option-card" data-price="10000" data-value="two_pedals">
+            <div class="option-title">Две педали швеллера</div>
+            <p>И педальная кнопка "вперед"</p>
+            <div class="option-price">+10 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="15000" data-value="custom_pedals">
+            <div class="option-title">Индивидуально</div>
+            <p>Своя конфигурация педалей</p>
+            <div class="option-price">+15 000 ₽</div>
+          </div>
+        </div>
+        <div class="config-nav-buttons">
+          <button class="config-nav-button secondary" onclick="prevStep(4)">Назад</button>
+          <button class="config-nav-button" onclick="nextStep(4)">Далее</button>
+        </div>
+      </div>
+      
+      <!-- Шаг 5: Корпус -->
+      <div class="config-step" id="step5">
+        <h2 class="step-title">Материал корпуса</h2>
+        <div class="options-grid">
+          <div class="option-card" data-price="20000" data-value="oak">
+            <div class="option-title">Бук</div>
+            <p>Классический благородный материал</p>
+            <div class="option-price">+20 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="40000" data-value="walnut">
+            <div class="option-title">Орех</div>
+            <p>Теплый оттенок и красивая текстура</p>
+            <div class="option-price">+40 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="10000" data-value="modern">
+            <div class="option-title">Упрощенный</div>
+            <p>Крашенная сосна в минималистичном дизайне</p>
+            <div class="option-price">+10 000 ₽</div>
+          </div>
+        </div>
+        <div class="config-nav-buttons">
+          <button class="config-nav-button secondary" onclick="prevStep(5)">Назад</button>
+          <button class="config-nav-button" onclick="nextStep(5)">Далее</button>
+        </div>
+      </div>
+      
+      <!-- Шаг 6: Дополнительно -->
+      <div class="config-step multiple-select" id="step6">
+        <h2 class="step-title">Дополнительные опции (можно выбрать несколько)</h2>
+        <div class="options-grid multiple-select">
+          <div class="option-card" data-price="0" data-value="midi">
+            <div class="option-title">MIDI-интерфейс</div>
+            <p>Подключение к компьютеру и синтезаторам</p>
+            <div class="option-price">+0 ₽</div>
+          </div>
+          <div class="option-card" data-price="5000" data-value="light">
+            <div class="option-title">Подсветка</div>
+            <p>Декоративная подсветка корпуса</p>
+            <div class="option-price">+5 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="10000" data-value="stand">
+            <div class="option-title">Нерегулируемая скамейка</div>
+            <p>Для удобной игры сидя под ваши параметры</p>
+            <div class="option-price">+10 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="25000" data-value="transport">
+            <div class="option-title">Транспортировочный кейс</div>
+            <p>Защитный чехол для перевозки инструмента</p>
+            <div class="option-price">+25 000 ₽</div>
+          </div>
+          <div class="option-card" data-price="35000" data-value="audio">
+            <div class="option-title">Аудиосистема</div>
+            <p>Качественные колонки для полноценного звучания</p>
+            <div class="option-price">+35 000 ₽</div>
+          </div>
+        </div>
+        <div class="config-nav-buttons">
+          <button class="config-nav-button secondary" onclick="prevStep(6)">Назад</button>
+          <button class="config-nav-button" onclick="nextStep(6)">Далее</button>
+        </div>
+      </div>
+      
+      <!-- Шаг 7: Итог -->
+      <div class="config-step" id="step7">
+        <h2 class="step-title">Ваша конфигурация</h2>
+        <div class="config-preview" id="final-preview">
+          <img alt="Ваш орган" src="logo1.png"/>
+        </div>
+        <div class="summary">
+          <div class="summary-item">
+            <span>Тип органа:</span>
+            <span id="summary-type">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Клавиатура:</span>
+            <span id="summary-keyboard">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Педаль:</span>
+            <span id="summary-pedal">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Педали швеллера:</span>
+            <span id="summary-sweller">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Корпус:</span>
+            <span id="summary-body">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Дополнительно:</span>
+            <span id="summary-options">-</span>
+          </div>
+          <div class="total">
+            <span>Итого:</span>
+            <span id="total-price">0 ₽</span>
+          </div>
+        </div>
+        <div class="config-nav-buttons">
+          <button class="config-nav-button secondary" onclick="prevStep(7)">В начало</button>
+          <button class="config-nav-button" id="order-button">Оформить заказ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Текущая конфигурация
+const config = {
+    type: null,
+    keyboard: null,
+    pedal: null,
+    sweller: null,
+    body: null,
+    options: [],
+    total: 0
+};
+
+// Названия опций для отображения
+const optionNames = {
+    home: "Домашний орган",
+    concert: "Концертный орган",
+    church: "Церковный орган",
+    pedal: "Органная педаль",
+    "2manuals": "2 мануала",
+    "3manuals": "3 мануала",
+    custom: "Индивидуальная",
+    standard: "Прямая",
+    radial: "Радиальная",
+    none: "Без педали",
+    double_purpose: "Одна + пистон",
+    two_pedals: "Две + пистон",
+    custom_pedals: "Индивидуально",
+    oak: "Буковый",
+    walnut: "Ореховый",
+    modern: "Упрощенный",
+    midi: "MIDI-интерфейс",
+    light: "Подсветка",
+    transport: "Кейс",
+    stand: "Скамейка",
+    audio: "Аудиосистема"
+};
+
+// Инициализация конфигуратора
+document.addEventListener('DOMContentLoaded', function() {
+    // Для обычных шагов (одиночный выбор)
+    document.querySelectorAll('.config-step:not(.multiple-select) .option-card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.parentNode.querySelectorAll('.option-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            this.classList.add('selected');
+        });
+    });
+
+    // Для шага с множественным выбором
+    document.querySelectorAll('.multiple-select .option-card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.classList.toggle('selected');
+        });
+    });
+    
+    // Кнопка заказа
+    document.getElementById('order-button').addEventListener('click', function() {
+        alert('К сожалению, конструктор пока не завершен, для оформления заказа подзвоните либо пишите во всех мессенджерах, присылайте скриншот по номеру +79022410241');
+    });
+    
+    // Обновляем прогресс-бар и кнопки навигации
+    updateProgress(1);
+    updateNavButtons(1);
+});
+
+// Переход к следующему шагу
+function nextStep(currentStep) {
+    // Проверяем, что опция выбрана
+    const selected = document.querySelector(`#step${currentStep} .option-card.selected`);
+    if (!selected && currentStep !== 6) { // На шаге 6 опции не обязательны
+        alert('Пожалуйста, выберите один из вариантов');
+        return;
+    }
+    
+    // Сохраняем выбранную опцию
+    switch(currentStep) {
+        case 1:
+            config.type = selected.dataset.value;
+            config.total = parseInt(selected.dataset.price);
+            
+            // Если выбрана "Органная педаль", сразу переходим к итогу
+            if (config.type === 'pedal') {
+                skipToFinalStep();
+                return;
+            }
+            break;
+        case 2:
+            config.keyboard = selected.dataset.value;
+            config.total += parseInt(selected.dataset.price);
+            break;
+        case 3:
+            config.pedal = selected.dataset.value;
+            config.total += parseInt(selected.dataset.price);
+            break;
+        case 4:
+            config.sweller = selected.dataset.value;
+            config.total += parseInt(selected.dataset.price);
+            break;
+        case 5:
+            config.body = selected.dataset.value;
+            config.total += parseInt(selected.dataset.price);
+            break;
+        case 6:
+            // Для дополнительных опций можно выбрать несколько
+            const selectedOptions = document.querySelectorAll(`#step${currentStep} .option-card.selected`);
+            config.options = [];
+            selectedOptions.forEach(opt => {
+                config.options.push(opt.dataset.value);
+                config.total += parseInt(opt.dataset.price);
+            });
+            
+            // Обновляем итоговую страницу
+            updateSummary();
+            break;
+    }
+    
+    // Переходим к следующему шагу
+    document.getElementById(`step${currentStep}`).classList.remove('active');
+    document.getElementById(`step${currentStep + 1}`).classList.add('active');
+    
+    // Обновляем прогресс-бар и кнопки навигации
+    updateProgress(currentStep + 1);
+    updateNavButtons(currentStep + 1);
+}
+
+// Пропуск шагов при выборе "Органная педаль"
+function skipToFinalStep() {
+    // Скрываем все шаги
+    document.querySelectorAll('.config-step').forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    // Показываем итоговый шаг
+    document.getElementById('step7').classList.add('active');
+    
+    // Устанавливаем прогресс на 100%
+    updateProgress(7);
+    updateNavButtons(7);
+    
+    // Обновляем итоговую информацию
+    updateSummary();
+}
+
+// Возврат к предыдущему шагу
+function prevStep(currentStep) {
+    // Если мы на итоговом шаге (7) - возвращаем на первый шаг
+    if (currentStep === 7) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById('step1').classList.add('active');
+        updateProgress(1);
+        updateNavButtons(1);
+        return;
+    }
+    
+    document.getElementById(`step${currentStep}`).classList.remove('active');
+    document.getElementById(`step${currentStep - 1}`).classList.add('active');
+    
+    // Обновляем прогресс-бар и кнопки навигации
+    updateProgress(currentStep - 1);
+    updateNavButtons(currentStep - 1);
+}
+
+// Обновление видимости кнопок навигации
+function updateNavButtons(step) {
+    const allNavButtons = document.querySelectorAll('.config-nav-buttons');
+    allNavButtons.forEach(buttons => {
+        const backButton = buttons.querySelector('.config-nav-button.secondary');
+        if (backButton) {
+            backButton.style.display = step === 1 ? 'none' : 'block';
+        }
+    });
+}
+
+// Обновление прогресс-бара
+function updateProgress(step) {
+    const percent = (step - 1) * (100 / 6); // 7 шагов, поэтому делим на 6
+    document.getElementById('progress').style.width = `${percent}%`;
+}
+
+// Обновление итоговой страницы
+function updateSummary() {
+    // Если выбрана "Органная педаль", показываем только ее
+    if (config.type === 'pedal') {
+        document.getElementById('summary-type').textContent = optionNames[config.type];
+        document.getElementById('summary-keyboard').textContent = 'Не требуется';
+        document.getElementById('summary-pedal').textContent = 'Включена';
+        document.getElementById('summary-sweller').textContent = 'Не требуется';
+        document.getElementById('summary-body').textContent = 'Стандартный';
+        document.getElementById('summary-options').textContent = 'Нет';
+        // Отображаем цену на 1 рубль меньше
+        const displayPrice = Math.max(0, 90000 - 1); // 90 000 - 1 = 89 999 ₽
+        document.getElementById('total-price').textContent = `${displayPrice.toLocaleString()} ₽`;
+        return;
+    }
+    
+    // Для других вариантов показываем полную информацию
+    document.getElementById('summary-type').textContent = optionNames[config.type] || '-';
+    document.getElementById('summary-keyboard').textContent = optionNames[config.keyboard] || '-';
+    document.getElementById('summary-pedal').textContent = optionNames[config.pedal] || '-';
+    document.getElementById('summary-sweller').textContent = optionNames[config.sweller] || '-';
+    document.getElementById('summary-body').textContent = optionNames[config.body] || '-';
+    
+    // Дополнительные опции
+    const optionsText = config.options.length > 0 
+        ? config.options.map(opt => optionNames[opt]).join(', ')
+        : 'Нет';
+    document.getElementById('summary-options').textContent = optionsText;
+    
+    // Итоговая цена (оригинальная цена в config.total, отображаем на 1 рубль меньше)
+    const displayPrice = Math.max(0, config.total - 1); // Гарантируем неотрицательное значение
+    document.getElementById('total-price').textContent = `${displayPrice.toLocaleString()} ₽`;
+}
+// Переключение между вкладками
+document.querySelectorAll('.nav-button[data-tab]').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Удаляем активный класс у всех кнопок и вкладок
+        document.querySelectorAll('.nav-button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Добавляем активный класс к текущей кнопке и вкладке
+        this.classList.add('active');
+        const tabId = this.getAttribute('data-tab');
+        const tab = document.getElementById(tabId);
+        if (tab) {
+            tab.classList.add('active');
+            
+            // Особый случай для конфигуратора
+            if (tabId === 'tab4') {
+                document.querySelector('.configurator').style.display = 'block';
+                resetConfigurator();
+            } else {
+                document.querySelector('.configurator').style.display = 'none';
+            }
+        }
+    });
+});
+
+// Функция сброса конфигуратора
+function resetConfigurator() {
+    // Сбрасываем конфигурацию
+    config.type = null;
+    config.keyboard = null;
+    config.pedal = null;
+    config.sweller = null;
+    config.body = null;
+    config.options = [];
+    config.total = 0;
+    
+    // Сбрасываем выбор
+    document.querySelectorAll('.option-card.selected').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    // Возвращаем на первый шаг
+    document.querySelectorAll('.config-step').forEach(step => {
+        step.classList.remove('active');
+    });
+    document.getElementById('step1').classList.add('active');
+    
+    // Сбрасываем прогресс-бар и кнопки навигации
+    updateProgress(1);
+    updateNavButtons(1);
+    
+    // Сбрасываем итоговую информацию
+    document.getElementById('summary-type').textContent = '-';
+    document.getElementById('summary-keyboard').textContent = '-';
+    document.getElementById('summary-pedal').textContent = '-';
+    document.getElementById('summary-sweller').textContent = '-';
+    document.getElementById('summary-body').textContent = '-';
+    document.getElementById('summary-options').textContent = '-';
+    document.getElementById('total-price').textContent = '0 ₽';
+}
+
+// Управление всплывающими подсказками
+const tgButton = document.getElementById('tg-button');
+const emailButton = document.getElementById('email-button');
+
+[tgButton, emailButton].forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+    });
+
+    button.addEventListener('mouseenter', function() {
+        this.classList.add('active');
+    });
+
+    button.addEventListener('mouseleave', function() {
+        this.classList.remove('active');
+    });
+});
+
+// Закрытие подсказок при клике вне кнопок
+document.addEventListener('click', function() {
+    tgButton.classList.remove('active');
+    emailButton.classList.remove('active');
+});
+</script>
+</body>
+</html>
